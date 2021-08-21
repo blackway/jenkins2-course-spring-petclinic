@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.web;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -33,6 +35,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class VetController {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
     private final ClinicService clinicService;
 
 
@@ -59,6 +63,7 @@ public class VetController {
         // so it is simpler for JSon/Object mapping
         Vets vets = new Vets();
         vets.getVetList().addAll(this.clinicService.findVets());
+        logger.info(" @@@@@ vets.getVetList() : " +vets.getVetList().size());
         return vets;
     }
 
