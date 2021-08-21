@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sun.istack.logging.Logger;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -42,6 +44,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class OwnerRestController {
 
+	Logger logger = Logger.getLogger(this.getClass());
+	
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final ClinicService clinicService;
 
@@ -89,8 +93,22 @@ public class OwnerRestController {
 
         // find owners by last name
         Collection<Owner> results = this.clinicService.findOwnerByLastName(owner.getLastName());
+        logger.info(" @@@@@ results : "+results.size());
         return results;
     }
+//    
+//    @RequestMapping(value = "/rest/owners", method = RequestMethod.GET)
+//    public Collection<Owner> processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+//    	
+//    	// allow parameterless GET request for /owners to return all records
+//    	if (owner.getLastName() == null) {
+//    		owner.setLastName(""); // empty string signifies broadest possible search
+//    	}
+//    	
+//    	// find owners by last name
+//    	Collection<Owner> results = this.clinicService.findOwnerByLastName(owner.getLastName());
+//    	return results;
+//    }
 
     @RequestMapping(value = "/rest/owners/{ownerId}/edit", method = RequestMethod.GET)
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
